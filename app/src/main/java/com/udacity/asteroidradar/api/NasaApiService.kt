@@ -1,0 +1,49 @@
+package com.udacity.asteroidradar.api
+
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.PictureOfDay
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+//list of asteroids
+//ex: https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-07-24&end_date=2023-07-31&api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X
+//https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X
+
+//pic of day
+//https://api.nasa.gov/planetary/apod?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X
+
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+
+private val retrofit = Retrofit.Builder()
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .baseUrl(Constants.BASE_URL)
+    .build()
+
+//Retrofit has a built-in suspend support.
+interface Callable {
+    //Deferred value is a non-blocking cancellable future — it is a Job with a result.
+    @GET("/neo/rest/v1/feed?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X")
+    suspend fun getAsteroids(
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String
+    ): String
+
+    @GET("/planetary/apod?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X")
+    suspend fun getPictureOfDay(): PictureOfDay
+
+}
+
+//We will expose our retrofit service to the rest of the application
+//using a public "object"
+object NasaAPI {
+    val retrofitService: Callable by lazy {
+        retrofit.create(Callable::class.java)
+    }
+}
