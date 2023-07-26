@@ -1,16 +1,12 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.NasaAPI
-import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDBHelper
+import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
@@ -18,13 +14,13 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     val picOfDay: LiveData<PictureOfDay>
         get() = _picOfDay
 
-    private val _asteroids = MutableLiveData<ArrayList<Asteroid>>()
-    val asteroids: LiveData<ArrayList<Asteroid>>
-        get() = _asteroids
+    private val asteroidsRepository = AsteroidsRepository(AsteroidDBHelper.getInstance(app))
+
+    val asteroids = asteroidsRepository.cachedAsteroids
 
     init {
         getPicture()
-        getAsteroidsList()
+        getAsteroidsListFromRepository()
     }
 
     private fun getPicture() {
@@ -34,20 +30,9 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun getAsteroidsList() {
+    private fun getAsteroidsListFromRepository(){
         viewModelScope.launch {
-            val sevenDays = getNextSevenDaysFormattedDates()
-            //Log.d("trace", "${sevenDays}")
-            val asteroidsString = NasaAPI.retrofitService.getAsteroids(sevenDays[0], sevenDays[6])
-            _asteroids.value = parseAsteroidsJsonResult(JSONObject(asteroidsString))
-            Log.d("trace", "${asteroids.value}")
-            saveAsteroids()
-        }
-    }
-
-    private fun saveAsteroids() {
-        viewModelScope.launch {
-            AsteroidDBHelper.getInstance(app).asteroidDao.saveAllAsteroids(asteroids.value!!)
+            asteroidsRepository.refreshAsteroidsList()
         }
     }
 
