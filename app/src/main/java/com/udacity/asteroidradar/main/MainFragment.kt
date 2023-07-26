@@ -14,19 +14,16 @@ class MainFragment : Fragment() {
         ViewModelProvider(this)[MainViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
-
-        viewModel.asteroids.observe(viewLifecycleOwner) {
-            for (a in it)
-                Log.d("trace", ": $a")
-        }
 
         return binding.root
     }

@@ -5,11 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 
-@Database(entities = [Asteroid::class], version = 1, exportSchema = false)
+@Database(entities = [Asteroid::class, PictureOfDay::class], version = 1, exportSchema = false)
 abstract class AsteroidDBHelper : RoomDatabase() {
 
     abstract val asteroidDao: AsteroidDAO
+    abstract val picOfDayDAO: PicOfDayDAO
 
     companion object {
         //writes to this field are immediately made visible to other threads.

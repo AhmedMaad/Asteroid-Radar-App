@@ -9,30 +9,25 @@ import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
-
-    private val _picOfDay = MutableLiveData<PictureOfDay>()
-    val picOfDay: LiveData<PictureOfDay>
-        get() = _picOfDay
-
+    
     private val asteroidsRepository = AsteroidsRepository(AsteroidDBHelper.getInstance(app))
-
     val asteroids = asteroidsRepository.cachedAsteroids
+    val pictureOfDay = asteroidsRepository.cachedPictureOfDay
 
     init {
-        getPicture()
         getAsteroidsListFromRepository()
+        getPictureOfDayFromRepository()
     }
 
-    private fun getPicture() {
-        //Suspend function should be called only from a coroutine or another suspend function
+    private fun getAsteroidsListFromRepository() {
         viewModelScope.launch {
-            _picOfDay.value = NasaAPI.retrofitService.getPictureOfDay()
+            asteroidsRepository.refreshAsteroidsList()
         }
     }
 
-    private fun getAsteroidsListFromRepository(){
+    private fun getPictureOfDayFromRepository() {
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroidsList()
+            asteroidsRepository.refreshPicOfDay()
         }
     }
 
