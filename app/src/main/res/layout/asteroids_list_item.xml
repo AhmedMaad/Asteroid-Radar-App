@@ -3,23 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+    Note: According to: https://support.google.com/accessibility/android/answer/7158690?hl=en
+    Text rendered in TextView (or its subclasses) is automatically provided to accessibility services.
+     Additional content labels are usually unnecessary.
+    -->
+
     <data>
+
         <variable
             name="data"
             type="com.udacity.asteroidradar.Asteroid" />
-    
+
         <variable
             name="clickCallback"
             type="com.udacity.asteroidradar.main.AsteroidsAdapter.OnClickListener" />
-    
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:onClick="@{() -> clickCallback.onClick(data)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:background="@color/app_background">
+        android:background="@color/app_background"
+        android:onClick="@{() -> clickCallback.onClick(data)}">
 
         <TextView
             android:id="@+id/code_name_tv"

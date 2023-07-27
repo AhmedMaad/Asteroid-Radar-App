@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+Note: According to: https://support.google.com/accessibility/android/answer/7158690?hl=en
+Text rendered in TextView (or its subclasses) is automatically provided to accessibility services.
+ Additional content labels are usually unnecessary.
+-->
+
     <data>
 
         <variable
@@ -47,6 +53,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/close_approach_data_title"
                         android:text="@string/close_approach_data_title"
                         android:textColor="@color/default_text_color" />
 
@@ -93,6 +100,7 @@
                         android:id="@+id/help_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/astronomical_unit_explanation_button"
                         android:padding="16dp"
                         app:srcCompat="@drawable/ic_help_circle" />
 

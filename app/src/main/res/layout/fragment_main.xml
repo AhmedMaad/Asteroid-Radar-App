@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+Note: According to: https://support.google.com/accessibility/android/answer/7158690?hl=en
+Text rendered in TextView (or its subclasses) is automatically provided to accessibility services.
+ Additional content labels are usually unnecessary.
+-->
+
     <data>
 
         <variable
