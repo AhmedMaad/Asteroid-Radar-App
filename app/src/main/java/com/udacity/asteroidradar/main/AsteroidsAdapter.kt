@@ -30,9 +30,7 @@ class AsteroidsAdapter(
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         holder.binding.data = asteroids[position]
-        holder.binding.root.setOnClickListener {
-            onItemClickListener.onClick(asteroids[position])
-        }
+        holder.binding.clickCallback = onItemClickListener
     }
 
 }

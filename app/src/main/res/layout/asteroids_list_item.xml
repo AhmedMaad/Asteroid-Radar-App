@@ -7,9 +7,15 @@
         <variable
             name="data"
             type="com.udacity.asteroidradar.Asteroid" />
+    
+        <variable
+            name="clickCallback"
+            type="com.udacity.asteroidradar.main.AsteroidsAdapter.OnClickListener" />
+    
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{() -> clickCallback.onClick(data)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
