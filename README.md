@@ -8,4 +8,8 @@ Asteroid Radar is an app to view the asteroids detected by NASA that pass near E
 + Help managing long running tasks using **Coroutines**.
 + Displying data using a **Recycler View**.
 + Loading images using **Picasso** library.
-+ Using **MVVM** as an architectural pattern.
++ Using **MVVM** as an architectural pattern.'
++ **Work Manager** to schedule repeated daily tasks. 
+
+## Note:
+Don't forget to add your API key in the **two** `Query` annotations that exist inside the `NasaApiService` kotlin file inside the `api` package.

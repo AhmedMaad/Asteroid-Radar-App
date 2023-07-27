@@ -36,7 +36,7 @@ interface Callable {
         @Query("end_date") endDate: String
     ): String
 
-    @GET("planetary/apod?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X")
+    @GET("planetary/apod?api_key=")
     suspend fun getPictureOfDay(): PictureOfDay
 
 }
