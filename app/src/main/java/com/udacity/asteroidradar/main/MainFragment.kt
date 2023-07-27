@@ -35,11 +35,12 @@ class MainFragment : Fragment() {
         viewModel.asteroids.observe(viewLifecycleOwner) { asteroids ->
 
             asteroids?.apply {
-                binding.asteroidRecycler.adapter = AsteroidsAdapter(requireActivity(), this)
+                binding.asteroidRecycler.adapter = AsteroidsAdapter(requireActivity(), this
+                    , AsteroidsAdapter.OnClickListener {
+                            Log.d("trace", ": $it")
+                    })
             }
 
-            for (a in asteroids)
-                Log.d("trace", "$a")
         }
     }
 
