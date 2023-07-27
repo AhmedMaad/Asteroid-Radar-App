@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.AsteroidDBHelper
 import com.udacity.asteroidradar.repository.AsteroidsRepository
@@ -12,20 +13,37 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     val asteroids = asteroidsRepository.cachedAsteroids
     val pictureOfDay = asteroidsRepository.cachedPictureOfDay
 
+    private val _hasError = MutableLiveData(false)
+    val hasError: LiveData<Boolean>
+        get() = _hasError
+
     init {
         getAsteroidsListFromRepository()
         getPictureOfDayFromRepository()
     }
 
-    private fun getAsteroidsListFromRepository() {
+    fun getAsteroidsListFromRepository() {
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroidsList()
+            try {
+                asteroidsRepository.refreshAsteroidsList()
+            }
+            catch (e: Exception) {
+                Log.d("trace", "Asteroids Error: $e")
+                _hasError.value = true
+            }
+
         }
     }
 
-    private fun getPictureOfDayFromRepository() {
+     fun getPictureOfDayFromRepository() {
         viewModelScope.launch {
-            asteroidsRepository.refreshPicOfDay()
+            try {
+                asteroidsRepository.refreshPicOfDay()
+            }
+            catch (e: Exception) {
+                Log.d("trace", "Pic Error: $e")
+                _hasError.value = true
+            }
         }
     }
 
