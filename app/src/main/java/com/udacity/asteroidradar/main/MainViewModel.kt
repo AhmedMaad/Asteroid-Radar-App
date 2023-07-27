@@ -28,7 +28,6 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                 asteroidsRepository.refreshAsteroidsList()
             }
             catch (e: Exception) {
-                Log.d("trace", "Asteroids Error: $e")
                 _hasError.value = true
             }
 
@@ -41,7 +40,6 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                 asteroidsRepository.refreshPicOfDay()
             }
             catch (e: Exception) {
-                Log.d("trace", "Pic Error: $e")
                 _hasError.value = true
             }
         }

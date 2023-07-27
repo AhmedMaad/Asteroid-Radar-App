@@ -46,17 +46,26 @@ class MainFragment : Fragment() {
         }
 
         viewModel.hasError.observe(viewLifecycleOwner) { hasError ->
-            if (hasError)
+            if (hasError) {
+                binding.statusLoadingWheel.visibility = View.GONE
                 Snackbar.make(
                     binding.root,
                     R.string.error_message,
                     BaseTransientBottomBar.LENGTH_INDEFINITE
                 )
                     .setAction(R.string.try_again) {
+                        binding.statusLoadingWheel.visibility = View.VISIBLE
                         viewModel.getAsteroidsListFromRepository()
                         viewModel.getPictureOfDayFromRepository()
                     }
                     .show()
+            }
+
+            viewModel.asteroids.observe(viewLifecycleOwner) {
+                binding.statusLoadingWheel.visibility = View.GONE
+            }
+
+
         }
     }
 
