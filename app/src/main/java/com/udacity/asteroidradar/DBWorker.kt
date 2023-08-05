@@ -11,8 +11,7 @@ class DBWorker(val context: Context, workParams: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         val repo = AsteroidsRepository(AsteroidDBHelper.getInstance(context))
-        repo.refreshPicOfDay()
-        repo.refreshAsteroidsList()
+        repo.refreshAsteroidsList(1)
         return Result.success()
     }
 

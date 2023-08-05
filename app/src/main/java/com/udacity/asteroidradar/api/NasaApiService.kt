@@ -30,13 +30,13 @@ private val retrofit = Retrofit.Builder()
 //Retrofit has a built-in suspend support.
 interface Callable {
     //Deferred value is a non-blocking cancellable future — it is a Job with a result.
-    @GET("neo/rest/v1/feed?api_key=")
+    @GET("neo/rest/v1/feed?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X")
     suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String
     ): String
 
-    @GET("planetary/apod?api_key=")
+    @GET("planetary/apod?api_key=dePHzIKlQ9PTqPhVtnbaekIPrLKNjLKVMgwn8O9X")
     suspend fun getPictureOfDay(): PictureOfDay
 
 }
