@@ -1,10 +1,7 @@
 package com.udacity.asteroidradar.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.udacity.asteroidradar.Asteroid
 
 @Dao
@@ -18,6 +15,9 @@ interface AsteroidDAO {
       Therefore, there is no need to mark LiveData functions as suspend.*/
     @Query("SELECT * FROM asteroid ORDER BY close_approach_date")
     fun getFilteredAsteroids(): LiveData<List<Asteroid>>
+
+    @Query("DELETE FROM asteroid")
+    suspend fun deleteAllAsteroids()
 
 
 }

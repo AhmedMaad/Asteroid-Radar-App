@@ -3,7 +3,9 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.database.AsteroidDBHelper
+import com.udacity.asteroidradar.database.AsteroidsDBFilter
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
 
@@ -18,31 +20,41 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         get() = _hasError
 
     init {
-        getAsteroidsListFromRepository()
+        getAsteroidsListFromRepository(AsteroidsDBFilter.SHOW_ALL)
         getPictureOfDayFromRepository()
     }
 
-    fun getAsteroidsListFromRepository() {
+    fun getAsteroidsListFromRepository(filter: AsteroidsDBFilter) {
         viewModelScope.launch {
             try {
-                asteroidsRepository.refreshAsteroidsList()
-            }
-            catch (e: Exception) {
+                when (filter.value) {
+                    Constants.ALL -> asteroidsRepository.refreshAsteroidsList()
+                    Constants.WEEK -> asteroidsRepository.refreshAsteroidsList(startDate = 1)
+                    Constants.TODAY -> asteroidsRepository.refreshAsteroidsList(
+                        startDate = 0,
+                        endDate = 0
+                    )
+                }
+
+            } catch (e: Exception) {
                 _hasError.value = true
             }
 
         }
     }
 
-     fun getPictureOfDayFromRepository() {
+    fun getPictureOfDayFromRepository() {
         viewModelScope.launch {
             try {
                 asteroidsRepository.refreshPicOfDay()
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _hasError.value = true
             }
         }
+    }
+
+    fun updateFilter(filter: AsteroidsDBFilter) {
+        getAsteroidsListFromRepository(filter)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.repository
 
+import android.util.Log
 import com.udacity.asteroidradar.api.NasaAPI
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -18,11 +19,12 @@ class AsteroidsRepository(private val database: AsteroidDBHelper) {
     * operation is complete. Because of this, you have to run the disk I/O in the I/O dispatcher
     * designed to offload blocking I/O tasks to a shared pool of threads
     * */
-    suspend fun refreshAsteroidsList(startDate: Int = 0) {
+    suspend fun refreshAsteroidsList(startDate: Int = 0, endDate: Int = 7) {
         withContext(Dispatchers.IO) {
             val sevenDays = getNextSevenDaysFormattedDates()
-            val asteroidsString = NasaAPI.retrofitService.getAsteroids(sevenDays[startDate], sevenDays[7])
+            val asteroidsString = NasaAPI.retrofitService.getAsteroids(sevenDays[startDate], sevenDays[endDate])
             val asteroids = parseAsteroidsJsonResult(JSONObject(asteroidsString))
+            database.asteroidDao.deleteAllAsteroids()
             database.asteroidDao.saveAllAsteroids(asteroids)
         }
     }

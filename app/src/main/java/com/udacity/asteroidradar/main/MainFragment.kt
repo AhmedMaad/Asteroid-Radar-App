@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.database.AsteroidsDBFilter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
@@ -55,7 +56,7 @@ class MainFragment : Fragment() {
                 )
                     .setAction(R.string.try_again) {
                         binding.statusLoadingWheel.visibility = View.VISIBLE
-                        viewModel.getAsteroidsListFromRepository()
+                        viewModel.getAsteroidsListFromRepository(AsteroidsDBFilter.SHOW_ALL)
                         viewModel.getPictureOfDayFromRepository()
                     }
                     .show()
@@ -75,6 +76,12 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val filter = when (item.itemId) {
+            R.id.view_week_menu -> AsteroidsDBFilter.SHOW_WEEK
+            R.id.view_today_menu -> AsteroidsDBFilter.SHOW_TODAY
+            else -> AsteroidsDBFilter.SHOW_ALL
+        }
+        viewModel.updateFilter(filter)
         return true
     }
 

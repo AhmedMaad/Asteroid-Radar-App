@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PictureOfDay
 
+enum class AsteroidsDBFilter(val value: String) { SHOW_WEEK(Constants.WEEK), SHOW_TODAY(Constants.TODAY), SHOW_ALL(Constants.ALL) }
 @Database(entities = [Asteroid::class, PictureOfDay::class], version = 1, exportSchema = false)
 abstract class AsteroidDBHelper : RoomDatabase() {
 
